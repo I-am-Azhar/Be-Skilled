@@ -1,103 +1,81 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+import SiteNavbarServer from "@/components/site-navbar-server";
+import { Hero } from "@/components/hero";
 
-export default function Home() {
+type Course = {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  price: number;
+  discount_price: number | null;
+  tag: string | null;
+  thumbnail_url: string | null;
+};
+
+export default async function Home() {
+  const supabase = getSupabaseServerClient();
+  const { data: courses, error } = await supabase
+    .from("courses")
+    .select("id, title, subtitle, price, discount_price, tag, thumbnail_url")
+    .order("title", { ascending: true });
+
+  const hasError = Boolean(error);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen w-full">
+      {/* Server navbar to reflect auth state correctly */}
+      <SiteNavbarServer />
+      <Hero />
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        {hasError ? (
+          <div className="mb-6 rounded border p-4 text-sm">
+            <p className="font-medium">Failed to load courses</p>
+            <p className="text-muted-foreground mt-1">Ensure Supabase URL and anon key env vars are set and the `courses` table exists.</p>
+            <pre className="mt-2 whitespace-pre-wrap text-xs text-muted-foreground">{error?.message}</pre>
+          </div>
+        ) : null}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {(courses ?? []).map((course) => {
+            const hasDiscount = course.discount_price && course.discount_price < course.price;
+            return (
+              <Card key={course.id} className="flex flex-col">
+                <CardHeader>
+                  <CardTitle>{course.title}</CardTitle>
+                  <CardDescription>{course.subtitle}</CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto">
+                  <div className="flex items-baseline gap-2 mb-4">
+                    {hasDiscount ? (
+                      <>
+                        <span className="text-xl font-semibold">₹{course.discount_price}</span>
+                        <span className="text-sm line-through text-muted-foreground">₹{course.price}</span>
+                      </>
+                    ) : (
+                      <span className="text-xl font-semibold">₹{course.price}</span>
+                    )}
+                    {course.tag ? (
+                      <span className="ml-auto text-xs px-2 py-1 rounded bg-muted">{course.tag}</span>
+                    ) : null}
+                  </div>
+                  <div className="flex gap-2">
+                    <Link href={`/course/${course.id}`} className="w-full">
+                      <Button className="w-full">View details</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="mt-10 text-center">
+          <Link href="/login">
+            <Button variant="outline">Sign in / Sign up</Button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

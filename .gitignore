@@ -15,14 +15,20 @@
 
 # next.js
 /.next/
+.next/cache/
 /out/
 
 # production
 /build
 
+# turbo/swc caches
+.turbo/
+.swc/
+
 # misc
 .DS_Store
 *.pem
+.eslintcache
 
 # debug
 npm-debug.log*
@@ -32,6 +38,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+.env.local
 
 # vercel
 .vercel
@@ -39,3 +47,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# test runner artifacts (optional)
+.playwright/
+.playwright-report/
+.cypress-cache/
+cypress/screenshots/
+cypress/videos/
