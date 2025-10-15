@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import SiteNavbarServer from "@/components/site-navbar-server";
 import { Hero } from "@/components/hero";
 
 type Course = {
@@ -26,8 +25,6 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen w-full">
-      {/* Server navbar to reflect auth state correctly */}
-      <SiteNavbarServer />
       <Hero />
       <div className="mx-auto max-w-6xl px-4 py-10">
         {hasError ? (

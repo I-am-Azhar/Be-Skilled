@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Payments with Razorpay
+
+Configure environment variables in `.env.local`:
+
+```
+RAZORPAY_KEY_ID=rzp_test_xxxxx
+RAZORPAY_KEY_SECRET=xxxxxxxx
+RAZORPAY_WEBHOOK_SECRET=xxxxxxxx
+```
+
+Endpoints:
+- `POST /api/razorpay/order` – creates an order for a course (auth required)
+- `POST /api/razorpay/verify` – verifies signature after client checkout and grants access
+- `POST /api/razorpay/webhook` – verifies webhook signature and grants access on `payment.captured`
+
+Client:
+- `RazorpayButton` loads the checkout script and starts the payment flow on the course page.

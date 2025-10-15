@@ -13,10 +13,18 @@ export function getSupabaseServerClient() {
         return cookieStore.get(name)?.value;
       },
       set(name: string, value: string, options: CookieOptions) {
-        cookieStore.set({ name, value, ...options });
+        try {
+          cookieStore.set(name, value, { path: "/", ...options });
+        } catch {
+          // Ignore if called during a render phase where cookies cannot be modified
+        }
       },
       remove(name: string, options: CookieOptions) {
-        cookieStore.set({ name, value: "", ...options });
+        try {
+          cookieStore.set(name, "", { path: "/", maxAge: 0, ...options });
+        } catch {
+          // Ignore if called during a render phase where cookies cannot be modified
+        }
       },
     },
   });

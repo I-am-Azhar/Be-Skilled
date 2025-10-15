@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RazorpayButton } from "@/components/razorpay-button";
 
 type Course = {
   id: string;
@@ -49,13 +50,12 @@ export default async function CoursePage({ params }: { params: { id: string } })
               ) : null}
             </div>
 
-            <form action={`/api/checkout`} method="POST" className="flex gap-3">
-              <input type="hidden" name="course_id" value={course.id} />
-              <Button type="submit">Buy now</Button>
+            <div className="flex gap-3">
+              <RazorpayButton courseId={course.id} />
               <Link href="/" className="inline-flex">
                 <Button type="button" variant="outline">Back</Button>
               </Link>
-            </form>
+            </div>
           </CardContent>
         </Card>
       </div>

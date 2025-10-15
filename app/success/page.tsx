@@ -3,7 +3,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export default async function SuccessPage({ searchParams }: { searchParams: { course_id?: string } }) {
+export default async function SuccessPage({ searchParams }: { searchParams: { course_id?: string; order_id?: string } }) {
   const courseId = searchParams?.course_id;
   const supabase = getSupabaseServerClient();
 

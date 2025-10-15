@@ -34,3 +34,4 @@ export default async function AdminCourseEditPage({ params }: { params: { id: st
 }
 
 
+
