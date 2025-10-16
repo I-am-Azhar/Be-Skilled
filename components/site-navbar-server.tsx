@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { NavbarHideOnScroll } from "@/components/NavbarHideOnScroll";
 
 export default async function SiteNavbarServer() {
   const supabase = getSupabaseServerClient();
@@ -13,17 +14,19 @@ export default async function SiteNavbarServer() {
   const isAdmin = profile?.role === "admin";
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+    <NavbarHideOnScroll>
+      <header className="sticky top-3 z-40 w-full">
+        <div className="mx-auto max-w-6xl px-4 mt-10">
+          <div className="h-14 flex items-center justify-between rounded-full border bg-background/40 backdrop-blur supports-[backdrop-filter]:bg-background/30 shadow-sm">
         <div className="flex items-center gap-3">
-          <Link href="/" className="font-extrabold text-base">
+          <Link href="/" className="font-extrabold text-base pl-10">
             <span className="text-foreground">Be</span>
             <span className="text-primary">Skilled</span>
           </Link>
         </div>
 
         {/* Desktop nav */}
-        <nav className="hidden sm:flex items-center gap-6 text-sm">
+        <nav className="hidden sm:flex items-center gap-6 text-sm ">
           <Link href="/">Home</Link>
           {isAdmin ? (
             <>
@@ -54,7 +57,7 @@ export default async function SiteNavbarServer() {
             </SheetTrigger>
             <SheetContent side="left">
               <SheetHeader className="p-4">
-                <Link href="/" className="font-extrabold text-lg">
+                <Link href="/" className="font-extrabold text-lg  ">
                   <span className="text-foreground">Be</span>
                   <span className="text-primary">Skilled</span>
                 </Link>
@@ -91,7 +94,7 @@ export default async function SiteNavbarServer() {
           </Sheet>
 
           {/* Desktop auth button */}
-          <div className="hidden sm:block">
+          <div className="hidden sm:block pr-10">
             {user ? (
               <form action="/auth/signout" method="post">
                 <Button size="sm" variant="outline" type="submit">Sign out</Button>
@@ -103,8 +106,10 @@ export default async function SiteNavbarServer() {
             )}
           </div>
         </div>
-      </div>
-    </header>
+          </div>
+        </div>
+      </header>
+    </NavbarHideOnScroll>
   );
 }
 
