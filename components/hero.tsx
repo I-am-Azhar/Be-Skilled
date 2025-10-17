@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import SearchBar from "./SearchBar";
 
 export function Hero() {
   return (
@@ -14,9 +15,17 @@ export function Hero() {
             Buy courses and join real learning communities on WhatsApp.
           </p>
 
+          {/* Search Bar */}
+          <div className="mt-8 w-full max-w-2xl">
+            <SearchBar 
+              placeholder="Search courses by title, category, or tags..."
+              className="w-full"
+            />
+          </div>
+
           <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 justify-center">
-            <Link href="/#courses">
-              <Button size="lg">Browse Courses</Button>
+            <Link href="/courses">
+              <Button size="lg">Browse All Courses</Button>
             </Link>
             <Link href="/login">
               <Button size="lg" variant="outline">Login</Button>

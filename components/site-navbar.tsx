@@ -12,7 +12,9 @@ export function SiteNavbar() {
         <Link href="/" className="font-semibold">BeSkilled</Link>
         <nav className="hidden sm:flex items-center gap-6 text-sm">
           <Link href="/" className={pathname === "/" ? "font-medium" : "text-muted-foreground"}>Home</Link>
+          <Link href="/search" className={pathname === "/search" ? "font-medium" : "text-muted-foreground"}>Search</Link>
           <Link href="/dashboard" className={pathname === "/dashboard" ? "font-medium" : "text-muted-foreground"}>Dashboard</Link>
+          <Link href="/admin" className={pathname === "/admin" ? "font-medium" : "text-muted-foreground"}>Admin</Link>
         </nav>
         <div className="flex items-center gap-2">
           <Link href="/login">

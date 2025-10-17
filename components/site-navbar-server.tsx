@@ -35,7 +35,7 @@ export default async function SiteNavbarServer() {
             </>
           ) : (
             <>
-              <Link href="/course">Courses</Link>
+              <Link href="/courses">Courses</Link>
               <Link href="/about">About</Link>
               <Link href="/contact">Contact</Link>
             </>
@@ -74,7 +74,7 @@ export default async function SiteNavbarServer() {
                   </>
                 ) : (
                   <>
-                    <Link href="/course">Courses</Link>
+                    <Link href="/courses">Courses</Link>
                     <Link href="/about">About</Link>
                     <Link href="/contact">Contact</Link>
                   </>

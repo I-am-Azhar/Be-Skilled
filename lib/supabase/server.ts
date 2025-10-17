@@ -30,5 +30,8 @@ export function getSupabaseServerClient() {
   });
 }
 
+// Alias for API routes
+export const createClient = getSupabaseServerClient;
+
 
 
