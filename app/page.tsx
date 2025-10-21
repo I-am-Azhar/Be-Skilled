@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Hero } from "@/components/hero";
+import TrustBar from "@/components/TrustBar";
+import { CourseCover } from "@/components/CourseCover";
 
 type Course = {
   id: string;
@@ -26,6 +28,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen w-full">
       <Hero />
+      {/* <TrustBar /> */}
       <div className="mx-auto max-w-6xl px-4 py-10">
         {hasError ? (
           <div className="mb-6 rounded border p-4 text-sm">
@@ -38,7 +41,8 @@ export default async function Home() {
           {(courses ?? []).map((course) => {
             const hasDiscount = course.discount_price && course.discount_price < course.price;
             return (
-              <Card key={course.id} className="flex flex-col">
+              <Card key={course.id} className="flex flex-col overflow-hidden">
+                <CourseCover src={course.thumbnail_url} alt={course.title} />
                 <CardHeader>
                   <CardTitle>{course.title}</CardTitle>
                   <CardDescription>{course.subtitle}</CardDescription>

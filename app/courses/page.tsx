@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { BookOpen, Users, Clock, Star, Filter, Search, MessageCircle } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
+import { CourseCover } from "@/components/CourseCover";
 
 type Course = {
   id: string;
@@ -14,17 +15,13 @@ type Course = {
   discount_price: number | null;
   tag: string | null;
   thumbnail_url: string | null;
-  description: string | null;
-  duration: string | null;
-  level: string | null;
-  category: string | null;
 };
 
 export default async function CoursesPage() {
   const supabase = getSupabaseServerClient();
   const { data: courses, error } = await supabase
     .from("courses")
-    .select("id, title, subtitle, price, discount_price, tag, thumbnail_url, description, duration, level, category")
+    .select("id, title, subtitle, price, discount_price, tag, thumbnail_url")
     .order("title", { ascending: true });
 
   const hasError = Boolean(error);
@@ -109,18 +106,14 @@ export default async function CoursesPage() {
             {(courses ?? []).map((course) => {
               const hasDiscount = course.discount_price && course.discount_price < course.price;
               return (
-                <Card key={course.id} className="flex flex-col hover:shadow-lg transition-shadow">
+                <Card key={course.id} className="flex flex-col hover:shadow-lg transition-shadow overflow-hidden">
+                  <CourseCover src={course.thumbnail_url} alt={course.title} />
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <CardTitle className="text-lg mb-2">{course.title}</CardTitle>
                         <CardDescription className="mb-3">{course.subtitle}</CardDescription>
                       </div>
-                      {course.thumbnail_url && (
-                        <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center ml-4">
-                          <BookOpen className="h-8 w-8 text-muted-foreground" />
-                        </div>
-                      )}
                     </div>
                     
                     {/* Course Meta */}
