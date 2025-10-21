@@ -18,7 +18,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import SearchBar from './SearchBar'
 import FilterPanel from './FilterPanel'
 
 interface Course {
@@ -352,11 +351,6 @@ export default function SearchResults({
             </Button>
           </div>
         </div>
-
-        <SearchBar
-          onFiltersChange={handleFiltersChange}
-          className="w-full"
-        />
       </div>
 
       <div className="flex gap-6">

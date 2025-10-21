@@ -3,8 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { BookOpen, Users, Clock, Star, Filter, Search, MessageCircle } from "lucide-react";
-import SearchBar from "@/components/SearchBar";
+import { BookOpen, Users, Clock, Star, Filter, Search, MessageCircle } from "lucide-react";;
 import { CourseCover } from "@/components/CourseCover";
 
 type Course = {
@@ -43,13 +42,6 @@ export default async function CoursesPage() {
               Discover courses that match your interests and join vibrant learning communities
             </p>
             
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto">
-              <SearchBar 
-                placeholder="Search courses by title, category, or tags..."
-                className="w-full"
-              />
-            </div>
           </div>
         </div>
       </section>

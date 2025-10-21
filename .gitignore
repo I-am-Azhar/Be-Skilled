@@ -55,3 +55,5 @@ next-env.d.ts
 .cypress-cache/
 cypress/screenshots/
 cypress/videos/
+
+.agent-os/
