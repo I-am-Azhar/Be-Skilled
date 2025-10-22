@@ -30,6 +30,7 @@ export default async function CoursesPage() {
       category_id,
       course_categories!inner(name)
     `)
+    .eq("is_active", true)
     .order("title", { ascending: true });
 
   if (error) {

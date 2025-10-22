@@ -37,12 +37,17 @@ export function CoursesPageClient({ courses }: CoursesPageClientProps) {
   const categories = [...new Set(courses.map(course => course.course_categories?.name).filter(Boolean))];
   const levels = [...new Set(courses.map(course => course.level).filter(Boolean))];
   
-  // Define the new category options
-  const categoryOptions = [
+  // Define the new category options - only show categories that have active courses
+  const availableCategories = [
     "Digital Marketing",
     "Graphic Designing", 
     "Freelancing & Growth"
   ];
+  
+  // Filter to only show categories that have active courses
+  const categoryOptions = availableCategories.filter(category => 
+    courses.some(course => course.course_categories?.name === category)
+  );
 
   const handleFilter = (filterType: string, value: string) => {
     setActiveFilter(value);
@@ -207,7 +212,7 @@ export function CoursesPageClient({ courses }: CoursesPageClientProps) {
 
                     {/* Action Buttons */}
                     <div className="flex gap-2">
-                      <Link href={`/course/${course.id}`} className="flex-1">
+                      <Link href={`/course/${course.id}/details`} className="flex-1">
                         <Button className="w-full">View Details</Button>
                       </Link>
                       <Button variant="outline" size="icon">

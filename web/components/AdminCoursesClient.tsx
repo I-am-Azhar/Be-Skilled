@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Trash2, Edit, AlertTriangle } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Trash2, Edit, AlertTriangle, Power } from "lucide-react";
 import { toast } from "sonner";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
@@ -18,6 +19,7 @@ type Course = {
   discount_price: number | null;
   tag: string | null;
   category_id: string | null;
+  is_active: boolean;
 };
 
 type AdminCoursesClientProps = {
@@ -30,6 +32,7 @@ export function AdminCoursesClient({ courses }: AdminCoursesClientProps) {
   const [deletingCourseId, setDeletingCourseId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [categories, setCategories] = useState<Array<{id: string, name: string}>>([]);
+  const [togglingCourseId, setTogglingCourseId] = useState<string | null>(null);
 
   // Fetch categories from database - only show the 3 specified categories
   useEffect(() => {
@@ -110,6 +113,31 @@ export function AdminCoursesClient({ courses }: AdminCoursesClientProps) {
     }
   };
 
+  const handleToggleCourseStatus = async (courseId: string, currentStatus: boolean) => {
+    try {
+      setTogglingCourseId(courseId);
+      const response = await fetch(`/api/admin/courses/${courseId}/toggle`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_active: !currentStatus }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update course status");
+      }
+
+      toast.success(`Course ${!currentStatus ? 'enabled' : 'disabled'} successfully`);
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update course status");
+    } finally {
+      setTogglingCourseId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full p-6">
       <div className="mx-auto max-w-4xl grid gap-6">
@@ -127,7 +155,12 @@ export function AdminCoursesClient({ courses }: AdminCoursesClientProps) {
             {(courses ?? []).map((c) => (
               <div key={c.id} className="flex items-center gap-3 border p-3 rounded">
                 <div className="flex-1">
-                  <div className="font-medium">{c.title}</div>
+                  <div className="flex items-center gap-2">
+                    <div className="font-medium">{c.title}</div>
+                    <Badge variant={c.is_active ? "default" : "secondary"} className="text-xs">
+                      {c.is_active ? "Active" : "Disabled"}
+                    </Badge>
+                  </div>
                   <div className="text-sm text-muted-foreground">
                     ₹{c.discount_price ?? c.price} {c.discount_price ? <span className="line-through ml-2">₹{c.price}</span> : null}
                     {c.tag ? <span className="ml-3 text-xs px-2 py-0.5 rounded bg-muted">{c.tag}</span> : null}
@@ -137,6 +170,16 @@ export function AdminCoursesClient({ courses }: AdminCoursesClientProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={c.is_active}
+                      onCheckedChange={() => handleToggleCourseStatus(c.id, c.is_active)}
+                      disabled={togglingCourseId === c.id}
+                    />
+                    <span className="text-xs text-muted-foreground">
+                      {c.is_active ? "Enabled" : "Disabled"}
+                    </span>
+                  </div>
                   <Link href={`/admin/courses/${c.id}`}>
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />

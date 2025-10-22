@@ -45,12 +45,17 @@ export function HomeCoursesSection({ courses }: HomeCoursesSectionProps) {
   const categories = [...new Set(courses.map(course => course.course_categories?.name).filter(Boolean))];
   const tags = [...new Set(courses.map(course => course.tag).filter(Boolean))];
   
-  // Define the new category options
-  const categoryOptions = [
+  // Define the new category options - only show categories that have active courses
+  const availableCategories = [
     "Digital Marketing",
     "Graphic Designing", 
     "Freelancing & Growth"
   ];
+  
+  // Filter to only show categories that have active courses
+  const categoryOptions = availableCategories.filter(category => 
+    courses.some(course => course.course_categories?.name === category)
+  );
 
   const handleFilter = (filterType: string, value: string) => {
     setActiveFilter(value);
@@ -150,7 +155,7 @@ export function HomeCoursesSection({ courses }: HomeCoursesSectionProps) {
                   ) : null}
                 </div>
                 <div className="flex gap-2">
-                  <Link href={`/course/${course.id}`} className="w-full">
+                  <Link href={`/course/${course.id}/details`} className="w-full">
                     <Button className="w-full">View details</Button>
                   </Link>
                 </div>

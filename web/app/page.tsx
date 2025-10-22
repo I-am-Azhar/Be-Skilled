@@ -39,6 +39,7 @@ export default async function Home() {
       category_id,
       course_categories!inner(name)
     `)
+    .eq("is_active", true)
     .order("title", { ascending: true });
 
   const hasError = Boolean(error);

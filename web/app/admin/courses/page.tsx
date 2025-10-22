@@ -11,7 +11,7 @@ export default async function AdminCoursesPage() {
 
   const { data: courses } = await supabase
     .from("courses")
-    .select("id, title, price, discount_price, tag, category_id")
+    .select("id, title, price, discount_price, tag, category_id, is_active")
     .order("created_at", { ascending: false });
 
   return <AdminCoursesClient courses={courses || []} />;
