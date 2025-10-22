@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       const courseId = notes.course_id;
       const userId = notes.user_id;
       if (courseId && userId) {
-        const supabase = getSupabaseServerClient();
+        const supabase = await getSupabaseServerClient();
         const { error } = await supabase
           .from("user_courses")
           .insert({ user_id: userId, course_id: courseId });

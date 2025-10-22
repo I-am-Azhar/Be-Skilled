@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function SuccessPage({ searchParams }: { searchParams: { course_id?: string; order_id?: string } }) {
   const courseId = searchParams?.course_id;
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
 
   if (!courseId) {
     return (

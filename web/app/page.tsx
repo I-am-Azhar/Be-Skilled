@@ -24,7 +24,7 @@ type Course = {
 };
 
 export default async function Home() {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
   const { data: courses, error } = await supabase
     .from("courses")
     .select(`

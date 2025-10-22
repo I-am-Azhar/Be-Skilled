@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { NavbarHideOnScroll } from "@/components/NavbarHideOnScroll";
 
 export default async function SiteNavbarServer() {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = user ? await supabase.from("users").select("role").eq("id", user.id).single() : { data: null } as any;
 

@@ -19,7 +19,7 @@ type Course = {
 };
 
 export default async function CoursePage({ params }: { params: { id: string } }) {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
   const { data: course, error } = await supabase
     .from("courses")
     .select("id, title, subtitle, price, discount_price, tag, whatsapp_link, thumbnail_url")
