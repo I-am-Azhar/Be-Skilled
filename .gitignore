@@ -56,4 +56,12 @@ next-env.d.ts
 cypress/screenshots/
 cypress/videos/
 
-.agent-os/
+# Project-specific ignores
+agent-os/
+.bmad-core/
+.cursor/
+.gitignore.backup
+base-install.sh
+docs/
+package-lock.json.backup
+package.json.backup
