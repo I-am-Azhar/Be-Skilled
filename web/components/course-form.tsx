@@ -52,7 +52,7 @@ export function CourseForm({ initial }: { initial?: Partial<Values> & { id?: str
     },
   });
 
-  // Fetch categories from database
+  // Fetch categories from database - only show the 3 specified categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -60,6 +60,7 @@ export function CourseForm({ initial }: { initial?: Partial<Values> & { id?: str
           .from('course_categories')
           .select('id, name')
           .eq('is_active', true)
+          .in('name', ['Digital Marketing', 'Graphic Designing', 'Freelancing & Growth'])
           .order('sort_order', { ascending: true });
 
         if (error) {
@@ -72,7 +73,19 @@ export function CourseForm({ initial }: { initial?: Partial<Values> & { id?: str
           ];
           setCategories(fallbackCategories);
         } else {
-          setCategories(categoriesData || []);
+          // Ensure we have the 3 required categories, add them if missing
+          const requiredCategories = [
+            { id: 'digital-marketing', name: 'Digital Marketing' },
+            { id: 'graphic-designing', name: 'Graphic Designing' },
+            { id: 'freelancing-growth', name: 'Freelancing & Growth' }
+          ];
+          
+          const existingNames = categoriesData?.map(c => c.name) || [];
+          const missingCategories = requiredCategories.filter(req => 
+            !existingNames.includes(req.name)
+          );
+          
+          setCategories([...categoriesData, ...missingCategories]);
         }
       } catch (error) {
         console.error('Error fetching categories:', error);

@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createClient()
     
-    // Get all active categories with course counts
+    // Get only the 3 specified categories with course counts
     const { data: categories, error } = await supabase
       .from('course_categories')
       .select(`
@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
         is_active
       `)
       .eq('is_active', true)
+      .in('name', ['Digital Marketing', 'Graphic Designing', 'Freelancing & Growth'])
       .order('sort_order', { ascending: true })
 
     if (error) {
